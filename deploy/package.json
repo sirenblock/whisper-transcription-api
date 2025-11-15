@@ -1,0 +1,43 @@
+{
+  "name": "whisperapi-deployment",
+  "version": "1.0.0",
+  "description": "Deployment configurations and tests for WhisperAPI",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "validate": "bash scripts/validate-env.sh",
+    "health-check": "bash scripts/health-check.sh",
+    "deploy:railway": "bash scripts/deploy-railway.sh",
+    "deploy:vercel": "bash scripts/deploy-vercel.sh",
+    "backup": "bash scripts/backup-db.sh",
+    "setup:tailscale": "bash tailscale-setup.sh",
+    "setup:cloudflare": "bash cloudflare-tunnel-setup.sh"
+  },
+  "keywords": [
+    "deployment",
+    "railway",
+    "vercel",
+    "docker",
+    "whisperapi"
+  ],
+  "author": "WhisperAPI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "scripts/**/*.sh",
+      "*.sh"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}

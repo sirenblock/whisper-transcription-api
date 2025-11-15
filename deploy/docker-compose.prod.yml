@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # API Backend (Production)
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: whisperapi-prod
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_REGION=${S3_REGION}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_KEY=${S3_SECRET_KEY}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - STRIPE_PRICE_ID_PRO=${STRIPE_PRICE_ID_PRO}
+      - WORKER_MODE=${WORKER_MODE}
+      - LOCAL_WORKER_URL=${LOCAL_WORKER_URL}
+      - CLOUD_WORKER_URL=${CLOUD_WORKER_URL}
+      - API_KEY_PREFIX=wtr_live_
+      - API_KEY_LENGTH=32
+      - RATE_LIMIT_FREE=${RATE_LIMIT_FREE:-3}
+      - RATE_LIMIT_PRO=${RATE_LIMIT_PRO:-20}
+      - RATE_LIMIT_PAYG=${RATE_LIMIT_PAYG:-100}
+      - QUOTA_FREE=${QUOTA_FREE:-60}
+      - QUOTA_PRO=${QUOTA_PRO:-600}
+      - MAX_FILE_SIZE_MB=${MAX_FILE_SIZE_MB:-500}
+      - ALLOWED_FORMATS=${ALLOWED_FORMATS:-mp3,wav,m4a,mp4,mpeg,webm}
+      - FILE_RETENTION_HOURS=${FILE_RETENTION_HOURS:-24}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G

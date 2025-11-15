@@ -1,0 +1,103 @@
+// Whisper Transcription API - Database Schema
+// PostgreSQL database with Prisma ORM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  stripeCustomerId  String?  @unique @map("stripe_customer_id")
+  plan              Plan     @default(FREE)
+  monthlyMinutesUsed Float   @default(0) @map("monthly_minutes_used")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  apiKeys        ApiKey[]
+  transcriptions Transcription[]
+  usageLogs      UsageLog[]
+
+  @@map("users")
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  keyHash     String   @unique @map("key_hash")
+  name        String?
+  lastUsedAt  DateTime? @map("last_used_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model Transcription {
+  id              String            @id @default(cuid())
+  userId          String            @map("user_id")
+  filename        String
+  durationSeconds Float?            @map("duration_seconds")
+  model           WhisperModel      @default(BASE)
+  format          OutputFormat      @default(JSON)
+  status          TranscriptionStatus @default(QUEUED)
+  s3AudioUrl      String?           @map("s3_audio_url")
+  s3ResultUrl     String?           @map("s3_result_url")
+  errorMessage    String?           @map("error_message")
+  jobId           String?           @unique @map("job_id")
+  progress        Int               @default(0)
+  createdAt       DateTime          @default(now()) @map("created_at")
+  completedAt     DateTime?         @map("completed_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([jobId])
+  @@map("transcriptions")
+}
+
+model UsageLog {
+  id            Int      @id @default(autoincrement())
+  userId        String   @map("user_id")
+  transcriptionId String? @map("transcription_id")
+  minutesUsed   Float    @map("minutes_used")
+  timestamp     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, timestamp])
+  @@map("usage_logs")
+}
+
+enum Plan {
+  FREE
+  PRO
+  PAYG
+}
+
+enum WhisperModel {
+  BASE
+  SMALL
+  MEDIUM
+}
+
+enum OutputFormat {
+  JSON
+  SRT
+  VTT
+  TXT
+}
+
+enum TranscriptionStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+}

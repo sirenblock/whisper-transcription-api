@@ -1,0 +1,84 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary
+tmp/
+*.tmp
+
+# Testing
+coverage/
+
+# Orchestrator-specific files (exclude from Whisper API repo)
+.claude-orchestrator/
+keep-alive-auto.sh
+prompts-ready-to-paste/
+outputs/
+test-*.sh
+auto-claude-*.sh
+full-auto-claude.sh
+create-*.sh
+grant-permissions-and-launch.sh
+launch-all-13-final.sh
+launch-automated.sh
+launch-claude-*.sh
+open-*.sh
+paste-prompt.sh
+START.sh
+track-progress.sh
+final-system-events-test.sh
+launch-first-4.sh
+launch-next-4.sh
+launch-tasks-9-12.sh
+launch-all-12-ultimate.sh
+keep-alive.sh
+claude-orchestrator.sh
+TASK_*.md
+00_SHARED_CONTEXT.md
+ASSEMBLY_GUIDE.md
+FILE_INVENTORY.md
+SIMPLE_WORKFLOW.md
+WORKFLOW.txt
+EXECUTIVE_SUMMARY.md
+*SUMMARY*.md
+*INTEGRATION*.md
+*INTEGRATION-NOTES*.md
+QUICK_START.md
+README_START_HERE.md
+SETUP_GUIDE.md
+ORCHESTRATOR*.md
+ULTIMATE_LAUNCHER_README.md
+QUICKSTART_ORCHESTRATOR.md
+examples/PROJECT_*.md
+
+# Keep main orchestrator README
+!README.md
+
+# Keep Whisper API project files
+!MASTER_PROJECT_README.md
+!PROJECT_STATUS_FINAL.md
+!DEPLOYMENT_GUIDE.md
+!quick-start.sh
+!.env.master.example
