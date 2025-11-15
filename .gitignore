@@ -1,0 +1,58 @@
+# Claude Orchestrator Generated Files
+.claude-orchestrator/
+keep-alive-auto.sh
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+
+# Output directories
+dist/
+build/
+outputs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Project-specific (exclude old test scripts)
+test-*.sh
+auto-claude-*.sh
+full-auto-claude.sh
+create-*.sh
+grant-permissions-and-launch.sh
+launch-all-13-final.sh
+launch-automated.sh
+launch-claude-*.sh
+open-*.sh
+paste-prompt.sh
+START.sh
+track-progress.sh
+final-system-events-test.sh
+TASK_*.md
+00_SHARED_CONTEXT.md
+ASSEMBLY_GUIDE.md
+EXECUTIVE_SUMMARY.md
+FILE_INVENTORY.md
+SIMPLE_WORKFLOW.md
+WORKFLOW.txt
+prompts-ready-to-paste/
